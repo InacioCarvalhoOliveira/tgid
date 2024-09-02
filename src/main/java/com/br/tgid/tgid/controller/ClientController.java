@@ -16,25 +16,21 @@ public class ClientController {
 
     @PostMapping
     public Client createClient(@RequestBody Client client) {
-        // Delegates to the service layer to handle the creation and validation
         return clientService.createClient(client);
     }
 
     @GetMapping("/{id}")
     public Optional<Client> getClient(@PathVariable Long id) {
-        // Delegates to the service layer to fetch the client by ID
         return clientService.findById(id);
     }
 
     @PutMapping("/{id}")
     public Client updateClient(@PathVariable Long id, @RequestBody Client client) {
-        // Delegates to the service layer to handle the update and validation
         return clientService.updateClient(id, client);
     }
 
     @DeleteMapping("/{id}")
     public void deleteClient(@PathVariable Long id) {
-        // Delegates to the service layer to handle deletion
         clientService.deleteById(id);
     }
 }
