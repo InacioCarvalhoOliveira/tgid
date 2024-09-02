@@ -7,7 +7,7 @@
     Hibernate(para migracao direta do banco "prod")
     H2(para testes)
 
-### 0.1 Lnks
+### 0.1 Links
 
 * [HebHook endpoint](https://webhook.site/97a8d9f2-17f1-4412-8dea-1b3a0a2a3f2c)  
 
@@ -140,7 +140,7 @@ Corpo do e-mail (getBody()), que deve corresponder ao formato esperado
     Best regards,
         Your Company
 
-### Testes fixos obejevos da proposta:
+### Testes fixos objetivos da proposta:
 
 ![swagger](/doc/img/swagger.png)
 #
