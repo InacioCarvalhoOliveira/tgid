@@ -142,6 +142,9 @@ Corpo do e-mail (getBody()), que deve corresponder ao formato esperado
 
 ### Testes fixos obejevos da proposta:
 
+![swagger](/doc/img/swagger.png)
+#
 ![Webhook](/doc/img/hebhook.png)
-
+#
 ![mailtrap](/doc/img/mailtra.png)
+#
