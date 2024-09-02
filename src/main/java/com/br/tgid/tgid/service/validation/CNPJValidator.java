@@ -21,13 +21,13 @@ public class CNPJValidator {
 
         String cnpjBase = cnpj.substring(0, 12);
         String calculatedCnpj = cnpjBase + calculateVerificationDigit(cnpjBase);
-        
+
         return cnpj.equals(calculatedCnpj);
     }
 
     private static String calculateVerificationDigit(String cnpjBase) {
-        int firstDigit = calculateDigit(cnpjBase, new int[]{5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2});
-        int secondDigit = calculateDigit(cnpjBase + firstDigit, new int[]{6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2});
+        int firstDigit = calculateDigit(cnpjBase, new int[] { 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 });
+        int secondDigit = calculateDigit(cnpjBase + firstDigit, new int[] { 6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2 });
 
         return String.valueOf(firstDigit) + String.valueOf(secondDigit);
     }

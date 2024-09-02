@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-@Table(name = "companies") // Nome da tabela no banco de dados
+@Table(name = "companies")
 public class Company extends User {
 
     @Id
@@ -46,8 +46,6 @@ public class Company extends User {
     public void balanceUpdate(double value) {
         this.balance += value;
     }
-
-    // Getters and Setters
 
     public Long getId() {
         return id;

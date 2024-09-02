@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "client") // Nome da tabela no banco de dados
+@Table(name = "clients")
 public class Client extends User {
 
     @Id
@@ -35,7 +35,7 @@ public class Client extends User {
     }
 
     public Client(Long id, String cpf, String name, String email, double balance) {
-        super(id, cpf);  // Assuming User class has a corresponding constructor
+        super(id, cpf);
         if (!CPFValidator.isValidCPF(cpf)) {
             throw new IllegalArgumentException("CPF inválido.");
         }
@@ -61,8 +61,6 @@ public class Client extends User {
         }
         return false;
     }
-
-    // Getters and Setters
 
     public Long getId() {
         return id;

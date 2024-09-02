@@ -6,7 +6,7 @@ public class CPFValidator {
 
     public static boolean isValidCPF(Object value) {
         String cpf = (String) value;
-        
+
         if (cpf == null || cpf.trim().isEmpty()) {
             return true;
         }
@@ -34,7 +34,7 @@ public class CPFValidator {
         remainder = remainder < 2 ? 0 : 11 - remainder;
 
         String digit = String.valueOf(remainder);
-        String cpfWithFirstDigit = tempCpf + digit;  // Create a new variable
+        String cpfWithFirstDigit = tempCpf + digit; // Create a new variable
 
         // Calculate the second verification digit
         sum = IntStream.range(0, 10)

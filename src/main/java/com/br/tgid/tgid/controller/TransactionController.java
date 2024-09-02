@@ -1,7 +1,5 @@
 package com.br.tgid.tgid.controller;
 
-import com.br.tgid.tgid.entity.Client;
-import com.br.tgid.tgid.entity.Company;
 import com.br.tgid.tgid.service.ClientService;
 import com.br.tgid.tgid.service.CompanyService;
 import com.br.tgid.tgid.service.TransactionService;
@@ -15,7 +13,7 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/api")
 public class TransactionController {
 
-   @Autowired
+    @Autowired
     private TransactionService transactionService;
 
     @Autowired
@@ -28,14 +26,13 @@ public class TransactionController {
     public ResponseEntity<String> executeTransaction(@RequestBody TransactionRequest request) {
         try {
             boolean result = transactionService.runTransaction(
-                request.getType(),
-                request.getValue(),
-                request.getCompanyId(),
-                request.getClientId(),
-                request.getDate(),
-                request.getCallbackURL(),
-                request.getNotify()
-            );
+                    request.getType(),
+                    request.getValue(),
+                    request.getCompanyId(),
+                    request.getClientId(),
+                    request.getDate(),
+                    request.getCallbackURL(),
+                    request.getNotify());
 
             if (result) {
                 return ResponseEntity.ok("Transação realizada com sucesso.");
@@ -59,47 +56,58 @@ class TransactionRequest {
     private String callbackURL;
     private String notify;
 
-    // Getters e Setters
-
     public String getType() {
         return type;
     }
+
     public void setType(String type) {
         this.type = type;
     }
+
     public double getValue() {
         return value;
     }
+
     public void setValue(double value) {
         this.value = value;
     }
+
     public Long getCompanyId() {
         return companyId;
     }
+
     public void setCompanyId(Long companyId) {
         this.companyId = companyId;
     }
+
     public Long getClientId() {
         return clientId;
     }
+
     public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
+
     public String getDate() {
         return date;
     }
+
     public void setDate(String date) {
         this.date = date;
     }
+
     public String getCallbackURL() {
         return callbackURL;
     }
+
     public void setCallbackURL(String callbackURL) {
         this.callbackURL = callbackURL;
     }
+
     public String getNotify() {
         return notify;
     }
+
     public void setNotify(String notify) {
         this.notify = notify;
     }
