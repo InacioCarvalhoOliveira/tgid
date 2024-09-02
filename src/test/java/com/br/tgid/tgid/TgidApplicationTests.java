@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class TgidApplicationTests {
 
     @Autowired
@@ -89,12 +89,11 @@ class TgidApplicationTests {
                         "Thank you for choosing our services.\n\n" +
                         "Best regards,\n" +
                         "Your Company",
-                testClient.getName(),
+                testClient.getName(), // Replace with the actual client name
                 "deposito",
-                depositAmount,
+                100.00,
                 "01/09/2024",
-                testCompany.getBalance() 
-        );
+                1100.00);
         assertEquals(expectedEmailBody, sentEmail.getBody());
     }
 }
