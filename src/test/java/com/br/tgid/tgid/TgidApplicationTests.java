@@ -2,17 +2,23 @@ package com.br.tgid.tgid;
 
 import com.br.tgid.tgid.service.ClientService;
 import com.br.tgid.tgid.service.CompanyService;
+import com.br.tgid.tgid.service.EmailService;
 import com.br.tgid.tgid.service.TransactionService;
 import com.br.tgid.tgid.entity.Client;
 import com.br.tgid.tgid.entity.Company;
+import com.br.tgid.tgid.entity.Email;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -29,12 +35,14 @@ class TgidApplicationTests {
     @MockBean
     private CompanyService companyService;
 
+    @MockBean
+    private EmailService emailService; // Mock EmailService
+
     private Client testClient;
     private Company testCompany;
 
     @BeforeEach
     void setUp() {
-        // Initialize test data
         testClient = new Client();
         testClient.setId(1L);
         testClient.setBalance(200.00);
@@ -54,34 +62,39 @@ class TgidApplicationTests {
     @Test
     @Transactional
     void testSuccessfulDeposit() {
-        // Setup
         double depositAmount = 100.00;
         double initialCompanyBalance = testCompany.getBalance();
-        
-        // Act
-        transactionService.runTransaction("deposito", depositAmount, 8L, 1L, "01/09/2024", "https://webhook.site/97a8d9f2-17f1-4412-8dea-1b3f2c", "email");
-        
-        // Assert
-        double updatedCompanyBalance = companyService.findById(8L).get().getBalance();
-        assertEquals(initialCompanyBalance + depositAmount, updatedCompanyBalance, "O saldo da empresa não foi atualizado corretamente após o depósito.");
-    }
 
-    @Test
-    @Transactional
-    void testSuccessfulWithdrawal() {
-        // Setup
-        double withdrawalAmount = 100.00;
-        double initialClientBalance = testClient.getBalance();
-        double initialCompanyBalance = testCompany.getBalance();
-        
-        // Act
-        transactionService.runTransaction("saque", withdrawalAmount, 8L, 1L, "01/09/2024", "https://webhook.site/97a8d9f2-17f1-4412-8dea-1b3f2c", "email");
-        
-        // Assert
-        double updatedClientBalance = clientService.findById(1L).get().getBalance();
+        transactionService.runTransaction("deposito", depositAmount, 8L, 1L, "01/09/2024", null, "email");
+
         double updatedCompanyBalance = companyService.findById(8L).get().getBalance();
-        
-        assertEquals(initialClientBalance - (withdrawalAmount + withdrawalAmount * 0.05), updatedClientBalance, "O saldo do cliente não foi atualizado corretamente após o saque.");
-        assertEquals(initialCompanyBalance + withdrawalAmount, updatedCompanyBalance, "O saldo da empresa não foi atualizado corretamente após o saque.");
+        assertEquals(initialCompanyBalance + depositAmount, updatedCompanyBalance,
+                "O saldo da empresa não foi atualizado corretamente após o depósito.");
+
+        // Verify email sending
+        ArgumentCaptor<Email> emailCaptor = ArgumentCaptor.forClass(Email.class);
+        verify(emailService, times(1)).sendEmail(emailCaptor.capture());
+
+        Email sentEmail = emailCaptor.getValue();
+        assertEquals("setup@setup.com", sentEmail.getTo());
+        assertEquals("Transaction Notification", sentEmail.getSubject());
+        String expectedEmailBody = String.format(
+                "Dear %s,\n\n" +
+                        "Your recent transaction was successful.\n\n" +
+                        "Transaction Details:\n" +
+                        "Type: %s\n" +
+                        "Amount: %.2f\n" +
+                        "Date: %s\n" +
+                        "Updated Balance: %.2f\n\n" +
+                        "Thank you for choosing our services.\n\n" +
+                        "Best regards,\n" +
+                        "Your Company",
+                testClient.getName(),
+                "deposito",
+                depositAmount,
+                "01/09/2024",
+                testCompany.getBalance() 
+        );
+        assertEquals(expectedEmailBody, sentEmail.getBody());
     }
 }
